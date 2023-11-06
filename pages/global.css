@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-thead >tr>th, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-thead >tr>td {
+    position: relative;
+    color: rgba(0, 0, 0, 0.88);
+    font-weight: 600;
+    text-align: center;
+    background: #4C5BD4;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s ease;
+    color: white;
+}
+
+:where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-cell, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-thead>tr>th, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-tbody>tr>th, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper .ant-table-tbody>tr>td, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper tfoot>tr>th, :where(.css-dev-only-do-not-override-3mqfnx).ant-table-wrapper tfoot>tr>td {
+    position: relative;
+    padding: 16px 16px;
+    overflow-wrap: inherit;
+}

@@ -1,0 +1,229 @@
+
+import React from 'react';
+import { useState, ChangeEvent, useEffect } from 'react';
+import imageFile from '@/public/assets/js/TrangchuPage'
+import imageP from '@/public/assets/js/PhieuDanhGia'
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import Header from '@/components/Header';
+import { useRouter } from 'next/router';
+import titleArray from '@/components/tester2';
+import Link from 'next/link';
+import icon_but from '@/public/assets/img/icon_but.png'
+import icon_excel from '@/public/assets/img/icon_excel.png'
+import ep_logo from '@/public/assets/img/user.png'
+import Navbar from '@/components/Navbar';
+interface MyObject {
+    // Định nghĩa các thuộc tính của object của bạn
+    start: string;
+    end: string;
+    // ...
+}
+const searchArray = ['CÂU HỎI ĐÁNH GIÁ NHÂN VIÊN MỚI ĐẾN CHO KINH DOANH',
+    'Đề đánh giá năng lực nhân viên 8/7/2022',
+    'Đề đánh giá năng lực nhân viên 12/7/2022',
+    'Đề đánh giá năng lực nhân viên 15/7/2022',
+    'Đề đánh giá năng lực nhân viên 15/7/2022',
+    'Đề đánh giá năng lực nhân viên 15/7/2022',
+    'ĐỀ KIÊM TRA ĐẦU VÀO NGÀY 19/7/2022',
+    'ĐÁNH GIÁ NHÂN VIÊN ĐẦU VÀO NGÀY 19/7/2022 - Hải Yến',
+    'ĐỀ ĐÁNH GIÁ NĂNG LỰC VIỆT ANH  ',
+    'Đề kiểm tra đánh giá năng lực ngày 22/7/2022',
+    'Đề đánh giá năng lực ngày 25/7/2022 ',
+    'Đề kiểm tra năng lực nhân viên ngày 29/7',
+    'Đề đánh giá năng lực nhân viên Nguyễn Hữu Khánh',
+    'Đề đánh giá năng lực nhân viên Lại Văn Sơn Biên tập',
+    'Đề kiểm tra năng lực ngày 2/8 ',
+    'Đề đánh giá năng lực nhân viên Nguyễn Minh Vương',
+    'Đề đánh giá năng lực nhân viên 03/8',
+    'Đề đánh giá năng lực nhân viên 03/8',
+    'Đánh giá năng lực ngày 23/9 ']
+const arrayTenTieuChi = ['Tìm kiếm theo tên tiêu chí']
+const arrayNumber = ['2', '5', '10', '20', '50', '100']
+const searchState = ['Tất cả trạng thái', 'Đang mở', 'Đã đóng']
+const PhieuDanhGia = () => {
+
+
+    const [onstation, setOnstation] = useState(true)
+    const handleOnStation = () => {
+        setOnstation(!onstation)
+        setOnOffKh(true)
+
+    }
+
+    const [titleState, setTitleSate] = useState('Tất cả trạng thái')
+    const [searchQuery, setSearchQuery] = useState('');
+    const [filteredData, setFilteredData] = useState(searchState);
+    const handleSearch = (query: string) => {
+        const filteredResults = searchState.filter(item =>
+            item.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredData(filteredResults);
+    };
+    const handleInputChange = (event: any) => {
+        setSearchQuery(event.target.value);
+        handleSearch(event.target.value);
+    };
+    const [keHoach, setKeHoach] = useState('Tìm kiếm theo tên tên tiêu chí')
+    const [searchQueryKH, setSearchQueryKH] = useState('');
+    const [filteredDataKH, setFilteredDataKH] = useState(arrayTenTieuChi);
+    const handleSearchKH = (query: string) => {
+        const filteredResults = arrayTenTieuChi.filter(item =>
+            item.toLowerCase().includes(query.toLowerCase())
+        );
+        setFilteredDataKH(filteredResults);
+    };
+    const handleInputChangeKH = (event: any) => {
+        setSearchQueryKH(event.target.value);
+        handleSearchKH(event.target.value);
+    };
+    const [onOfKh, setOnOffKh] = useState(true)
+    const [hienThi, setHienThi] = useState('10')
+    const [onOfHT, setOnOfHT] = useState(true)
+
+    /*title */
+    const namePath = usePathname()
+    const [titleName, setTitleName] = useState('')
+
+    useEffect(() => {
+        // Find the item in titleArray that matches the namePath
+        const matchedItem = titleArray.find(item => item.id === namePath);
+
+        if (matchedItem) {
+            // Set the title based on the matched item's name
+            setTitleName(matchedItem.name);
+        }
+    }, []);
+    /* */
+    const [pagination, setPagination] = useState(89)
+
+    const [myArray, setMyArray] = useState([]);
+
+
+    useEffect(() => {
+        // Step 1: Retrieve the data from sessionStorage
+        const dataFromStorage = sessionStorage.getItem('arrayTieuChi');
+
+        // Step 2: Parse the data to get the array
+        if (dataFromStorage) {
+            const parsedArray = JSON.parse(dataFromStorage);
+            setMyArray(parsedArray);
+        }
+    }, []);
+    interface model {
+        name: string,
+        type: string,
+        state: boolean,
+        diem: number,
+        date: string
+    }
+    /* set hien thi checked trangthai */
+    const [staty, setStaty] = useState(true)
+    const handleChecked = (event: boolean) => {
+        event = !event;
+
+    }
+    const setAgainChek = (indexOf: number) => {
+        const arrayOf = JSON.parse(sessionStorage.getItem('arrayTieuChi') || '[]')
+        arrayOf[indexOf].state = !arrayOf[indexOf].state
+        console.log(arrayOf[indexOf].state)
+    }
+    const [alertDate, setAlertDate] = useState('')
+    return (
+        <div>
+            <div className="main">
+                <Navbar urlBack='/Quan-Li-Tieu-Chi-Danh-Gia'/>
+                <div className="main_body">
+                    <div className="phieudanhgia box-qlinhanvien">
+                        <p className="chuden size-14 tieude1024 bot-15">{titleName}</p>
+                    </div>
+                    <div className="d_flex align_c flex_end mb_20">
+                        <div className="btn_header_ql_tieuchi d_flex">
+                            <Link href="/quan_ly_tieu_chi_danh_gia_chinh_sua_145.html" className="btn sua">
+                                <div className="img mr_12">
+                                    <Image src={icon_but} alt="Chỉnh sửa" />
+                                </div>
+                                <p>Chỉnh sửa</p>
+                            </Link>
+                            <Link href="/Excel/tieuchi.php?idtc=145">
+                                <div className="btn excel">
+                                    <div className="img mr_12">
+                                        <Image src={icon_excel} alt="File excel" />
+                                    </div>
+                                    <p>Xuất excel</p>
+                                </div>
+                            </Link>
+                        </div>
+                    </div>
+                    <div className="body_ql_tieuchi body_ql_tieuchi_chitiet">
+                        <div className="header_d width_100">
+                            <h4>Thông tin tiêu chí</h4>
+                        </div>
+                        <div /*style="overflow-x: auto;"*/ className="body width_100">
+                            <ul className="thongtin_tieuchi">
+                                <li className="item">
+                                    <p>Tên tiêu chí:</p>
+                                    <p>hoang</p>
+                                </li>
+                                <li className="item">
+                                    <p>Loại tiêu chí:</p>
+                                    <p>Tiêu chí tổng hợp</p>
+                                </li>
+
+                                <li className="item hidden">
+                                    <p>Tiêu chí cha:</p>
+                                    <p></p>
+                                </li>
+
+                                <li className="item">
+                                    <p>Trạng thái:</p>
+                                    <p> <label className="switch_tatmo">
+                                        <input type="checkbox"  />
+                                            <span className="slider round"></span>
+                                    </label></p>
+                                </li>
+                                <li className="item hidden">
+                                    <p>Người tạo:</p>
+                                    <p> Mặc định</p>
+                                </li>
+                                <li className="item ">
+                                    <p>Người tạo:</p>
+                                    <div className="d_flex flex_start center-height width_100">
+
+
+                                        <div className="img mr_10 ">
+                                            <Image className="wh26_ra " src={ep_logo} alt="Người tạo" />
+                                        </div>
+
+                                        <p>le anh tuan12</p>
+
+                                    </div>
+                                </li>
+                                <li className="item">
+                                    <p>Ngày tạo:</p>
+                                    <p>29/07/2023</p>
+                                </li>
+                                <li className="item">
+                                    <p>Số điểm:</p>
+                                    <p>10</p>
+                                </li>
+                                <li className="item ">
+                                    <p>Ghi chú:</p>
+
+                                    <p>___</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript" src="../js/jquery-3.4.1.min.js" async></script>
+            <script type="text/javascript" src="../js/trangchung.js" async></script>
+            <script type="text/javascript" src="../js/select2.min.js" async></script>
+            <script type="text/javascript" src="../js/manh.js" async></script>
+            <script type="text/javascript"></script>
+
+        </div>
+    );
+};
+export default PhieuDanhGia;
